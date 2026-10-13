@@ -218,18 +218,16 @@
 
     const shown = matched.length;
     if (countEl) {
-      // Filtered to one kind, the list also says how many skills (services,
-      // primitives) those packages hold: "17 packages, 23 skills", not "17
-      // of 59 packages", whose 59 counts packages the filter left out.
+      // The header counts what matched, never the packages a filter left
+      // out. Filtered to one kind it also says how many skills (services,
+      // primitives) those packages hold: "17 packages, 23 skills". A kind no
+      // row has (a hand-typed ?kind=) matches nothing and names nothing.
       let provided = "";
-      if (state.kind && state.kind !== "robot") {
+      if (state.kind && state.kind !== "robot" && shown) {
         const n = matched.reduce((sum, row) => sum + (Number(row.dataset.provides) || 0), 0);
         provided = `, <b>${n}</b> ${n === 1 ? state.kind : `${state.kind}s`}`;
       }
-      countEl.innerHTML =
-        shown === rows.length || provided || !shown
-          ? `<b>${shown}</b> ${noun}${provided}`
-          : `<b>${shown}</b> of ${rows.length} ${noun}`;
+      countEl.innerHTML = `<b>${shown}</b> ${noun}${provided}`;
     }
     // The header counts the whole match; which slice this page shows is
     // said beside the page controls.
